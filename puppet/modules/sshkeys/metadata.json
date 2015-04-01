@@ -1,0 +1,33 @@
+{
+  "name": "jtopjian-sshkeys",
+  "version": "0.5.0",
+  "source": "git@github.com/jtopjian/puppet-sshkeys.git",
+  "author": "Joe Topjian",
+  "license": "Apache License, Version 2.0",
+  "summary": "sshkeys puppet module",
+  "description": "Module to manage SSH public keys as facter facts",
+  "project_page": "https://github.com/jtopjian/puppet-sshkeys",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 4.1.0"
+    },
+    {
+      "name": "dalen/puppetdbquery",
+      "version_requirement": ">= 1.3.2"
+    }
+  ],
+  "types": [
+
+  ],
+  "checksums": {
+    "Modulefile": "883a5b7a339c85d9e830f2d0dbaac507",
+    "README.md": "34a7850cc445470e40255fdfeb3470d1",
+    "lib/facter/sshpubkey.rb": "20a3dfe9c57f6ff00267191fbad59232",
+    "manifests/create_key.pp": "d2227315afaa7e38708d31296c2cb22c",
+    "manifests/create_ssh_directory.pp": "798e892f8926e25501df80cfb11ff3bd",
+    "manifests/set_authorized_key.pp": "422ecb8c79bb53cd8344ecaa19a33c2e",
+    "tests/create_key.pp": "567d06d454accd37b6038c5f48e7221a",
+    "tests/set_authorised_key.pp": "c3c794da698122a688768e3bc31b8847"
+  }
+}

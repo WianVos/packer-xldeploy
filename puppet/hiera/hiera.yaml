@@ -1,0 +1,16 @@
+---
+:hierarchy:
+  - "%{hostname}"
+  - "%{project}"
+  - "%{type}-%{size}"
+  - "%{type}"
+  - "%{calling_module}"
+  - "%{environment}"
+  - global
+
+:backends:
+  - yaml
+
+
+:yaml:
+  :datadir: /var/lib/hiera

@@ -1,0 +1,6 @@
+.tmp/
+secret.txt
+*.log
+terraform.tfstate*
+ssh/*
+packer_cache

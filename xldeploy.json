@@ -1,0 +1,65 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": "",
+    "download_password": "",
+    "vbox_ssh_name": "ubuntu",
+    "vbox_ssh_pass": "ubuntu",
+    "vbox_hostname": "xldeploy-packer-build"
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "us-east-1",
+    "source_ami": "ami-988ad1f0",
+    "instance_type": "m1.small",
+    "ssh_username": "ubuntu",
+    "ami_name": "xldeploy {{timestamp}}"
+  }, {
+  "type": "virtualbox-iso",
+    "guest_os_type": "Ubuntu_64",
+    "iso_url": "http://releases.ubuntu.com/14.04/ubuntu-14.04.2-server-amd64.iso",
+    "iso_checksum": "83aabd8dcf1e8f469f3c72fff2375195",
+    "iso_checksum_type": "md5",
+    "ssh_username": "{{user `vbox_ssh_name`}}",
+    "ssh_password": "{{user `vbox_ssh_pass`}}",
+    "http_directory" : "preseeds",
+    "ssh_wait_timeout": "20m",
+    "shutdown_command": "echo {{user `vbox_ssh_pass`}} | sudo -S shutdown -P now",
+    "boot_command": [
+      "<esc><esc><enter><wait>",
+      "/install/vmlinuz noapic ",
+      "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
+      "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
+      "hostname={{ .Name }} ",
+      "fb=false debconf/frontend=noninteractive ",
+      "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA ",
+      "keyboard-configuration/variant=USA console-setup/ask_detect=false ",
+      "initrd=/install/initrd.gz -- <enter>"
+      ]
+  }],
+  "provisioners": [ {
+        "type": "shell",
+        "script": "scripts/base.sh"
+    }, {
+        "type": "shell",
+        "script": "scripts/setup_hiera.sh",
+        "environment_vars": ["download_password={{user `download_password`}}"]
+    },{
+        "type": "puppet-masterless",
+        "manifest_file": "puppet/manifests/puppet.pp",
+        "hiera_config_path": "puppet/hiera/hiera.yaml",
+        "facter": {"type":"xldeploy"},
+        "module_paths": ["puppet/modules"],
+        "execute_command": "{{.FacterVars}}{{if .Sudo}} sudo -E {{end}}puppet apply --debug --verbose  --modulepath='{{.ModulePath}}' --hiera_config='{{.HieraConfigPath}}' --manifestdir='{{.ManifestDir}}' --detailed-exitcodes {{.ManifestFile}}"
+      },{"type": "shell",
+        "inline": "sudo service xl-deploy stop"
+        }],
+  "post-processors": [{
+      "type": "vagrant",
+      "only": ["virtualbox-iso"]
+    }
+  ]
+
+}

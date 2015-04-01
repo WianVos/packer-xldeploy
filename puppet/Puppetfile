@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+forge "https://forgeapi.puppetlabs.com"
+
+mod 'puppetlabs-stdlib'
+
+
+mod 'puppet-xldeploy',
+    :git => 'https://github.com/xebialabs/puppet-xldeploy.git'
+
+
+

@@ -1,0 +1,30 @@
+FORGE
+  remote: https://forgeapi.puppetlabs.com
+  specs:
+    dalen-puppetdbquery (1.5.3)
+    jtopjian-sshkeys (0.5.0)
+      dalen-puppetdbquery (>= 1.3.2)
+      puppetlabs-stdlib (>= 4.1.0)
+    puppetlabs-concat (1.2.0)
+      puppetlabs-stdlib (< 5.0.0, >= 3.2.0)
+    puppetlabs-inifile (1.2.0)
+    puppetlabs-pe_gem (0.1.0)
+    puppetlabs-stdlib (4.5.1)
+
+GIT
+  remote: https://github.com/xebialabs/puppet-xldeploy.git
+  ref: master
+  sha: 66a8d9ac053dd11e0f183058745713265119c2b3
+  specs:
+    puppet-xldeploy (1.2.3)
+      dalen-puppetdbquery (>= 1.4.0)
+      jtopjian-sshkeys (= 0.5.0)
+      puppetlabs-concat (>= 1.0.0)
+      puppetlabs-inifile (>= 1.0.0)
+      puppetlabs-pe_gem (>= 0.1.0)
+      puppetlabs-stdlib (>= 4.1.0)
+
+DEPENDENCIES
+  puppet-xldeploy (>= 0)
+  puppetlabs-stdlib (>= 0)
+
