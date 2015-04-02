@@ -23,11 +23,11 @@ init()
 
 do_packer(){
 		
-		PACKERCMD="packer build  ""${PACKER_BUILD_ARGS}"" xldeploy.json"
-		echo "running ${PACKERCMD}"
-		${PACKERCMD} 2>&1 | tee ${PACKERBUILDLOG}
-		AMI=`tail -2 ${PACKERBUILDLOG} | head -2 | awk 'match($0, /ami-.*/) { print substr($0, RSTART, RLENGTH) }'`
-		# Terraform piece
+	PACKERCMD="packer build  ""${PACKER_BUILD_ARGS}"" xldeploy.json"
+	echo "running ${PACKERCMD}"
+	${PACKERCMD} 2>&1 | tee ${PACKERBUILDLOG}
+	AMI=`tail -2 ${PACKERBUILDLOG} | head -2 | awk 'match($0, /ami-.*/) { print substr($0, RSTART, RLENGTH) }'`
+	# Terraform piece
 }
 
 do_terraform(){
@@ -56,8 +56,8 @@ destroy_terraform(){
          -no-color \
          -input=false\
          ${TERRAFORM_APPLY_ARGS}"
-
-    /usr/bin/expect -c "expect '\n' { eval ${TERRAFORMCMD} 2>&1 | tee ${TERRAFORMBUILDLOG}; send "yes\n" ;interact }"
+ 
+    ${TERRAFORMCMD} 2>&1 | tee ${TERRAFORMBUILDLOG}
        
 }
 run(){
@@ -65,7 +65,7 @@ run(){
 	do_terraform $AMI
 }
 
-set -x
+#set -x
 
 init
 
@@ -80,19 +80,22 @@ while getopts "Ddb:v:p:a:" opt; do
       echo "packer builder is set to $OPTARG" >&2
       PACKER_BUILD_ARGS=" ""${PACKER_BUILD_ARGS}"" ""-only=${OPTARG}"""
       ;;
-    v)
+	v) 
 	  echo "packer additional variables are set to ${OPTARG}" >&2
 	  PACKER_BUILD_ARGS=" ""${PACKER_BUILD_ARGS}"" ""${OPTARG}"""
 	  ;;
-	a) echo "terraform ami is set to ${OPTARG}" >&2
+	a) 
+	  echo "terraform ami is set to ${OPTARG}" >&2
 	  RUNNER="run_terraform_only $OPTARG"
 	  ;;
-	d) echo "destroy terraform setup"
+	d) 
+      echo "destroy terraform setup"
 	  RUNNER="destroy_terraform" 
-	 ;;
-	 D) export PACKER_LOG="debug"
-		export PACKER_LOG_PATH="./packer_log/packer.log"
-	 ;;
+	  ;;
+	D) 
+      export PACKER_LOG="debug"
+      export PACKER_LOG_PATH="./packer_debug.log"
+	  ;;
 	p)
 	  echo "running packer only"
 	  RUNNER='run_packer_only'

@@ -14,7 +14,7 @@ FORGE
 GIT
   remote: https://github.com/xebialabs/puppet-xldeploy.git
   ref: master
-  sha: 66a8d9ac053dd11e0f183058745713265119c2b3
+  sha: 38fcb8f730a96fd4e79538495da3dfefd564fd01
   specs:
     puppet-xldeploy (1.2.3)
       dalen-puppetdbquery (>= 1.4.0)
