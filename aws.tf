@@ -41,7 +41,7 @@ resource "aws_security_group" "xl-deploy" {
 }
 
 resource "aws_instance" "xl-deploy" {
-  instance_type = "t1.micro"
+  instance_type = "m1.small"
   ami = "${var.aws_ami}"
   count = 1
   key_name = "${aws_key_pair.xl-deploy.key_name}"
